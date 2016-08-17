@@ -17,8 +17,17 @@ cv2.drawContours(imgL, contours, -1, (255, 0, 0), 1)
 stereo = cv2.StereoBM(cv2.STEREO_BM_BASIC_PRESET, ndisparities=32, SADWindowSize=23)
 disparity = stereo.compute(imgL, imgR, cv2.CV_32F)
 disp_abs = np.absolute(disparity)
-print np.amin(disp_abs, (0, 1))
-# '''
+min_indices = np.argmin(disp_abs)
+min_pixels = np.array()
+
+for i in range(1, len(disp_abs[0])+1):
+    for j in range(1, len(disp_abs)+1):
+        if min_indices[] == 0:
+            continue
+        else:
+
+
+'''
 plt.figure()
 plt.title('Disparity map')
 plt.imshow(disparity)
@@ -29,4 +38,4 @@ plt.imshow(imgL, 'gray')
 # cv2.drawContours(thresh, contours, -1, (255, 0, 0), 1)
 # plt.imshow(diff)
 plt.show()
-# '''
+'''
