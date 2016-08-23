@@ -16,15 +16,16 @@ contoursR, hierarchy2 = cv2.findContours(threshR, cv2.RETR_TREE, cv2.CHAIN_APPRO
 cv2.drawContours(imgL_colour, contoursL, -1, (255, 0, 0), 1)
 cv2.drawContours(imgL_colour, contoursR, -1, (255, 0, 0), 1)
 
-print "row = " + str(np.argmax(imgL) // 1736 + 1) + ", column = " + str(np.argmax(imgL) % 1736)
-print "row = " + str(np.argmax(imgR) // 1736 + 1) + ", column = " + str(np.argmax(imgR) % 1736)
-print "row = " + str(np.argmax(diff) // 1736 + 1) + ", column = " + str(np.argmax(diff) % 1736)
+print contoursL
 
-plt.imshow(imgL, 'gray')
-plt.figure()
-plt.imshow(imgR, 'gray')
-plt.show()
+pixelShift_y = abs(np.argmax(imgL) // 1736 - np.argmax(imgR) // 1736)  # rows shifted
+pixelShift_x = abs(np.argmax(imgL) % 1736 - np.argmax(imgR) % 1736)  # columns shifted
 
+
+# plt.imshow(imgL, 'gray')
+# plt.figure()
+# plt.imshow(imgR, 'gray')
+# plt.show()
 
 '''
 commonPix = []
