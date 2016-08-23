@@ -24,8 +24,8 @@ def write_ply(fn, verts, colors):
 
 if __name__ == '__main__':
     print('loading images...')
-    imgL = cv2.imread('tsukuba.png') # downscale images for faster processing
-    imgR = cv2.imread('tsukuba.png')
+    imgL = cv2.imread('tsukuba-L.png') # downscale images for faster processing
+    imgR = cv2.imread('tsukuba-R.png')
 
     # disparity range is tuned for 'aloe' image pair
     window_size = 3
@@ -47,7 +47,7 @@ if __name__ == '__main__':
                #.astype(np.float32) / 16.0
 
     print('generating 3d point cloud...',)
-    h, w = imgL.shape()
+    h, w = imgL.shape[:2]
     f = 0.8*w                          # guess for focal length
     Q = np.float32([[1, 0, 0, -0.5*w],
                     [0,-1, 0,  0.5*h], # turn points 180 deg around x-axis,
