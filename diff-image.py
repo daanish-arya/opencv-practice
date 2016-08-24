@@ -4,8 +4,8 @@ import sys
 from matplotlib import pyplot as plt
 
 
-imgL = cv2.imread('0A0B4D50-A986-4659-9E5E-2A9BBF19D594_OD_1_L.jpg', cv2.CV_LOAD_IMAGE_GRAYSCALE)
-imgR = cv2.imread('0A0B4D50-A986-4659-9E5E-2A9BBF19D594_OD_1_R.jpg', cv2.CV_LOAD_IMAGE_GRAYSCALE)
+imgL = cv2.imread('tsukuba-l.jpg', cv2.CV_LOAD_IMAGE_GRAYSCALE)
+imgR = cv2.imread('tsukuba-r.jpg', cv2.CV_LOAD_IMAGE_GRAYSCALE)
 
 cols = imgL.shape[0]
 rows = imgR.shape[1]

@@ -1,4 +1,9 @@
+
+# Python 2/3 compatibility
+from __future__ import print_function
+
 import numpy as np
+from matplotlib import pyplot as plt
 import cv2
 
 ply_header = '''ply
@@ -24,27 +29,19 @@ def write_ply(fn, verts, colors):
 
 if __name__ == '__main__':
     print('loading images...')
-    imgL = cv2.imread('tsukuba-L.png') # downscale images for faster processing
-    imgR = cv2.imread('tsukuba-R.png')
+    imgL = cv2.imread('aloeL.jpg', cv2.CV_LOAD_IMAGE_GRAYSCALE)  # downscale images for faster processing
+    imgR = cv2.imread('aloeR.jpg', cv2.CV_LOAD_IMAGE_GRAYSCALE)
 
     # disparity range is tuned for 'aloe' image pair
     window_size = 3
     min_disp = 16
     num_disp = 112-min_disp
-    stereo = cv2.StereoSGBM(minDisparity = min_disp,
-        numDisparities = num_disp,
-        SADWindowSize= 16,
-        P1 = 8*3*window_size**2,
-        P2 = 32*3*window_size**2,
-        disp12MaxDiff = 1,
-        uniquenessRatio = 10,
-        speckleWindowSize = 100,
-        speckleRange = 32
-    )
+    stereo = cv2.StereoBM(cv2.STEREO_BM_BASIC_PRESET, ndisparities=num_disp, SADWindowSize=5)
+
 
     print('computing disparity...')
     disp = stereo.compute(imgL, imgR)
-               #.astype(np.float32) / 16.0
+               # .astype(np.float32) / 16.0
 
     print('generating 3d point cloud...',)
     h, w = imgL.shape[:2]
@@ -54,15 +51,15 @@ if __name__ == '__main__':
                     [0, 0, 0,     -f], # so that y-axis looks up
                     [0, 0, 1,      0]])
     points = cv2.reprojectImageTo3D(disp, Q)
-    colors = cv2.cvtColor(imgL, cv2.COLOR_BGR2RGB)
+    # colors = cv2.cvtColor(imgL, cv2.COLOR_BGR2RGB)
     mask = disp > disp.min()
     out_points = points[mask]
-    out_colors = colors[mask]
-    out_fn = 'out.ply'
-    write_ply('out.ply', out_points, out_colors)
+    # out_colors = colors[mask]
+    # out_fn = 'out.ply'
+    # write_ply('out.ply', out_points, out_colors)
     print('%s saved' % 'out.ply')
 
-    cv2.imshow('left', imgL)
-    cv2.imshow('disparity', (disp-min_disp)/num_disp)
-    cv2.waitKey()
-    cv2.destroyAllWindows()
+    plt.imshow(disp, 'gray')
+    plt.figure()
+    plt.imshow((disp-min_disp)/num_disp, 'gray')
+    plt.show()
